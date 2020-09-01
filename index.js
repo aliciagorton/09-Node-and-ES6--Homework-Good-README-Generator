@@ -1,107 +1,81 @@
-// AS A developer
-// I WANT a README generator
-// SO THAT can quickly create a professional README for a new project
-// GIVEN a command-line application that accepts user input
-// WHEN I am prompted for information about my application repository
-// THEN a quality, professional README.md is generated with the title of your project and sections entitled Description, Table of Contents, Installation, Usage, License, Contributing, Tests, and Questions
-// WHEN I enter my project title
-// THEN this is displayed as the title of the README
-// WHEN I enter a description, installation instructions, usage information, contribution guidelines, and test instructions
-// THEN this information is added to the sections of the README entitled Description, Installation, Usage, Contributing, and Tests
-// WHEN I choose a license for my application from a list of options
-// THEN a badge for that license is added hear the top of the README and a notice is added to the section of the README entitled License that explains which license the application is covered under
-// WHEN I enter my GitHub username
-// THEN this is added to the section of the README entitled Questions, with a link to my GitHub profile
-// WHEN I enter my email address
-// THEN this is added to the section of the README entitled Questions, with instructions on how to reach me with additional questions
-// WHEN I click on the links in the Table of Contents
-// THEN I am taken to the corresponding section of the README
-
-// * Title
-// * Description
-// * Table of Contents
-// * Installation
-// * Usage
-// * License
-// * Contributing
-// * Tests
-// * Questions
-
 const fs = require("fs");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown");
 
+
 // array of questions for user
-const questions = [
+const questions  = [
     {
         type: "input",
-        message: "Enter the title of your project",
-        name: "title"
+        message: "Enter the title (header) of your README",
+        name: "title",
     },
     {
         type: "input",
         message: "Enter a description of your project",
-        name: "description"
+        name: "description",
     },
     {
         type: "input",
-        message: "Enter the project's table of contents",
-        name: "table"
-    },
-     //look into default for inquirer
-    {
-        type: "input",
-        message: "Enter the project's intallation instructions",
-        name: "installation"
+        message: "Enter table of contents (separated by commas)",
+        name: "table",
     },
     {
         type: "input",
-        message: "Enter the project's usage information",
+        message: "Enter intallation instructions",
+        name: "installation",
+    },
+    {
+        type: "input",
+        message: "Enter instructions how to use",
         name: "usage"
     },
 
+    {   
+        type: "checkbox",
+        message: "Select licence or badge link",
+        name: "licence",
+        choices:[
+            new inquirer.Separator('=licence='),
+            {name: "MIT License", 
+            },
+            {name: "Apache License", 
+            },
+            {name: "GPL License", 
+            },
+            {name: "Public Domain (Unlicensed)", 
+            },
+        ], 
+    },
+    {  
+        type: "input",
+        message: "Enter the run test instructions",
+        name: "test",
+        
+    },
     {
         type: "input",
-        message: "Enter the projects contribution guidelines",
+        message: "Enter contributer's and/or contribution guidelines",
         name: "contributing",
         
     },
-    {   //look into default for inquirer
-        type: "input",
-        message: "Enter the run test instructions",
-        name: "test"
-        
-    },
-    {   //change the type to a list and have user pick
-        // WHEN I choose a license for my application from a list of options
-        // THEN a badge for that license is added hear the top of the README and a notice is added to the section of the README entitled License that explains which license the application is covered under
-        type: "list",
-        message: "Enter the project licence or badge link",
-        name: "licence"
-       
-    },
+
     // Github
     {
         type: "input",
         message: "Enter your GitHub username",
-        name: "username"
+        name: "username",
     },
     {
         type: "input",
         message: "Enter your email",
-        name: "email"
-    },
-    // Additional Questions
-    {
-        type: "input",
-        message: "Enter your GitHub username",
-        name: "username"
+        name: "email",
     },
 ];
 
 // function to write README file
-function writeToFile(fileName, data) {
-    return fs.writeFileSync(fileName, data);
+function writeToFile(filename, readmeAnswers) {
+    return fs.writeFileSync(filename, readmeAnswers);
 }
 
 // function to initialize program
@@ -113,5 +87,41 @@ function init() {
     })
 }
 
+let readmeAnswers =`
+   
+    # Title: ${questions.title}
+
+    ## Description: ${questions.description}
+
+    ## Table of Contents: ${questions.table}
+   
+    ### Installation
+    ${questions.installation}
+ 
+    ### Usage
+    ${questions.usage}
+
+    ### License:
+    ${questions.license}
+
+    ![GitHub License](https://img.shields.io/badge/license-${questions.license}-blue.svg)
+
+    ### Test
+    ${questions.testing}
+
+    ### Contributors
+    ${questions.contributors}
+
+    
+    ## Contact:
+    ### Developer: ${questions.developer}
+
+    ### Profile: https://github.com/${questions.github}
+    
+    `
+console.log(readme);
+
+
 // function call to initialize program
 init();
+
