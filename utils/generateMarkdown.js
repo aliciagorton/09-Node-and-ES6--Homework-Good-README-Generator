@@ -39,11 +39,10 @@ function generateMarkdown(data) {
   
 
   #### Functionality:
-  * Link to repository: 
-  
+
   * Link to live demonstration of user flow: 
 
-  
+  * Link to repository: https://github.com/aliciagorton/09-Node-and-ES6--Homework-Good-README-Generator.git
 
   `;
 }
