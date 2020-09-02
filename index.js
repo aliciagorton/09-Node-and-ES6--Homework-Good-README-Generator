@@ -17,40 +17,26 @@ const questions  = [
     },
     {
         type: "input",
-        message: "Enter table of contents (separated by commas)",
-        name: "table",
-    },
-    {
-        type: "input",
         message: "Enter intallation instructions",
         name: "installation",
+        default: "npm install"
     },
     {
         type: "input",
         message: "Enter instructions how to use",
         name: "usage"
     },
-
     {   
-        type: "checkbox",
+        type: "list",
         message: "Select licence or badge link",
-        name: "licence",
-        choices:[
-            new inquirer.Separator('=licence='),
-            {name: "MIT License", 
-            },
-            {name: "Apache License", 
-            },
-            {name: "GPL License", 
-            },
-            {name: "Public Domain (Unlicensed)", 
-            },
-        ], 
+        name: "license",
+        choices:["MIT", "Apache 2.0", "GPL 3.0", "BSD 3", "None"], 
     },
     {  
         type: "input",
         message: "Enter the run test instructions",
         name: "test",
+        default: "npm test"
         
     },
     {
@@ -70,12 +56,12 @@ const questions  = [
         type: "input",
         message: "Enter your email",
         name: "email",
-    },
+    }
 ];
 
 // function to write README file
-function writeToFile(filename, readmeAnswers) {
-    return fs.writeFileSync(filename, readmeAnswers);
+function writeToFile(filename, data) {
+    return fs.writeFileSync(filename, data);
 }
 
 // function to initialize program
@@ -86,41 +72,6 @@ function init() {
         writeToFile("README.md", generateMarkdown(answers))
     })
 }
-
-let readmeAnswers =`
-   
-    # Title: ${questions.title}
-
-    ## Description: ${questions.description}
-
-    ## Table of Contents: ${questions.table}
-   
-    ### Installation
-    ${questions.installation}
- 
-    ### Usage
-    ${questions.usage}
-
-    ### License:
-    ${questions.license}
-
-    ![GitHub License](https://img.shields.io/badge/license-${questions.license}-blue.svg)
-
-    ### Test
-    ${questions.testing}
-
-    ### Contributors
-    ${questions.contributors}
-
-    
-    ## Contact:
-    ### Developer: ${questions.developer}
-
-    ### Profile: https://github.com/${questions.github}
-    
-    `
-console.log(readme);
-
 
 // function call to initialize program
 init();
